@@ -1,56 +1,65 @@
 "use client"
-import styles from "./page.module.css";
+import { useEffect, useState } from "react";
+import { Container, Marker, Ruler, Water } from "./styles";
 
 export default function Home() {
 
-  const array = [100, 97, 95, 93, 90, 87, 85, 83, 80, 77, 75, 73, 70, 67, 65, 63, 60, 57, 55, 53, 50, 47, 45, 43, 40, 37, 35, 33, 30, 27, 25, 23, 20, 17, 15, 13, 10]
+  const array = [97, 95, 93, 87, 85, 83, 77, 75, 73, 67, 65, 63, 57, 55, 53, 47, 45, 43, 37, 35, 33, 27, 25, 23, 17, 15, 13, 0.7, 0.5, 0.3]
+  const bigNumbers = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10];
+
+  const testPorc = 50
+  const [elementHeight, setElementHeight] = useState<number>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+        const response = await fetch('/api/statistics/');
+        const data = await response.json();
+        console.log(data);
+        discoverHeight();
+    };
+
+    fetchData();
+}, []);
 
 
-  function discoverHeight(elementId: string) {
+  function discoverHeight() {
     
-    const myElement = document.getElementById(`${elementId}`);
+    const myElement = document.getElementById(`${testPorc}`);
 
     if (myElement) {
       const { bottom } = myElement.getBoundingClientRect();
       const pageHeight = window.innerHeight;
       const elementDistance = pageHeight - bottom;
-
-      console.log('Distância do elemento ao fundo da página:', elementDistance, 'pixels');
+      if (elementDistance) {
+        setElementHeight(elementDistance)
+      }
     }    
   }
 
   return (
     <>
-      <div className={styles.container}>
-        <aside className={styles.ruler}>
-        {array.map((number) => {
-            let content;
-            if (number % 10 === 0) {
-              content = number;
-            } else {
-              content = '-';
-            }
+      <Container>
+        <Ruler>
+        {bigNumbers.map((number) => {
             return (
                 <>
-                {content != '-' ? 
-                   <p 
-                   id={number.toString()}
-                   key={number}
-                   onClick={() => discoverHeight(number.toString())}
-                 >
-                   {content}
-                 </p>
-                : 
-                <span>
-                 &mdash;	
-                </span>
-                }
-                </>
+                    <p 
+                      id={number.toString()}
+                      key={number}>
+                        {number}
+                    </p>
+                    <Marker>
+                    {array.filter(num => (
+                      num.toString()[0] == (number - 1).toString()[0] && number != 10
+                    ))
+                      .map((num) => <span id={num.toString()} key={num}> &mdash;</span>)}
+                    </Marker>
+                </>  
             );
           })}
-        </aside>
-        <div className={styles.water}></div>
-      </div>
+        </Ruler>
+        <Water elementheight={elementHeight} />
+      </Container>
     </>
   );
 }
