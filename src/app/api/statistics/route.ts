@@ -6,11 +6,11 @@ export async function GET() {
         const client = await clientPromise;
         const db = client.db("agua_capital_registros");
  
-        const movies = await db
+        const infos = await db
             .collection("agua_capital_registros")
-            .find({ })
+            .find({})
             .toArray();
-            return NextResponse.json({ data: movies });
+            return NextResponse.json({ data: infos });
     } catch (e) {
         console.error(e);
     }
