@@ -1,6 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Anta&display=swap');
+
+:root {
+  --arrow-down-image: url('/arrow-down.png');
+}
+
 body, html {
   margin: 0;
   padding: 0;
-  height: 100%;
-  overflow: hidden;
+  height: 100vh;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+* {
+  font-family: "Anta", sans-serif;
 }

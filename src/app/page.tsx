@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Container, Marker, Ruler, Water } from "./styles";
+import { Container, Header, Main, Marker, OptionPersonalized, PersonalizedSelect, Ruler, Titulo, Water } from "./styles";
 
 interface IReservatorio {
   _id: string;
@@ -64,9 +64,10 @@ export default function Home() {
       const myElement = document.getElementById(`${parsedValue}`);
   
       if (myElement) {
-        const { bottom } = myElement.getBoundingClientRect();
-        const pageHeight = window.innerHeight;
-        const elementDistance = pageHeight - bottom;
+        const { top } = myElement.getBoundingClientRect();
+        const pageHeight = document.documentElement.scrollHeight;
+        console.log(pageHeight)
+        const elementDistance = pageHeight - top;
         if (elementDistance) {
           setElementHeight(elementDistance)
         }
@@ -75,7 +76,18 @@ export default function Home() {
   }
 
   return (
-    <>
+    <Main>
+     <Header>
+        <Titulo>Barragem de Santa Maria</Titulo>
+        <PersonalizedSelect>
+          <OptionPersonalized>
+            Descoberto
+          </OptionPersonalized>
+          <OptionPersonalized>
+            Santa Maria
+          </OptionPersonalized>
+        </PersonalizedSelect>
+      </Header>
       <Container>
         <Ruler>
         {bigNumbers.map((number) => {
@@ -86,7 +98,7 @@ export default function Home() {
                       key={number}>
                         {number}
                     </p>
-                    <Marker>
+                    <Marker key={Math.random()}>
                     {array.filter(num => (
                       num.toString()[0] == (number - 1).toString()[0] && number != 10
                     ))
@@ -109,6 +121,6 @@ export default function Home() {
           </div>
         </Water>
       </Container>
-    </>
+    </Main>
   );
 }

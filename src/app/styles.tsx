@@ -6,10 +6,10 @@ interface KeyFrameProps {
 
 const WaterRise = (elementHeight: number | undefined) => keyframes`
     0% {
-        height: 0%;
+        height: 0px;
     }
     100% {
-        height: calc(${elementHeight}px + 5px);
+        height: calc(${elementHeight}px - 6px);   
     }
 `;
 
@@ -26,11 +26,33 @@ export const Container = styled.div`
     position: relative;
     width: 100%;
     height: 100%;
-    background-color:#011F4B;
+    background-color: #011F4B;
 
     // @media (max-width: 640px) {
     //   width: 100vw;
     // }
+`
+
+export const Main = styled.section`
+    display: grid;
+    width: 100%;
+    height: 100%;
+    grid-template-rows: 7% 93%;
+`
+
+export const Header = styled.header`
+    display: flex;
+    background-color: #011F4B;
+    justify-content: space-around;
+    align-items: center;
+    padding: 2px;
+`
+
+export const Titulo = styled.h1`
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    color: white;
 `
 
 export const Ruler = styled.aside`
@@ -41,13 +63,12 @@ export const Ruler = styled.aside`
     z-index: 1;
     width: 100px;
     padding-right: 2px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 2px;
+    margin-bottom: 5px;
     color: white;
     direction: rtl;
-    justify-content: space-around;
-    height: 100vh;
-
+    justify-content: space-between;
+    height: 100%;
     > p {
         font-size: 17px;
         margin: 0;
@@ -65,6 +86,27 @@ export const Ruler = styled.aside`
     }
 
 `
+
+export const PersonalizedSelect = styled.select`
+        appearance: none;
+        border: 0;
+        outline: 0;
+        font: inherit;
+        height: fit-content;
+        width: 20rem;
+        padding: 8px 16px 8px 8px;
+        background: var(--arrow-down-image) no-repeat right 0.8em center / 1.4em,
+        linear-gradient(to right, #06beb6, #48b1bf);
+        color: white;
+        border-radius: 0.25em;
+        box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+`
+
+export const OptionPersonalized = styled.option`
+        color: black;
+`
+
 export const Marker = styled.div`
     display: flex;
     flex-direction: column;
@@ -79,24 +121,21 @@ export const Marker = styled.div`
     }
 `
 
-
 export const Water = styled.div<KeyFrameProps>`
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 100%;
-    height: 0;
+    width: 100vw;
     background-color: #b3cde0; 
     display: flex;
     padding-left: 101px;
     animation: ${({ elementheight }) => WaterRise(elementheight)} 5s ease forwards, ${Wave} 2s ease-in-out infinite;
-    transform-origin: bottom;
     overflow: visible; 
 
     > div {
         display: flex;
         position: absolute;
-        bottom: 94%; 
+        bottom: 90%; 
         left: 101;     
         align-items: center;
         height: fit-content;
