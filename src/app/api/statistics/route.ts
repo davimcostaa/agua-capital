@@ -1,4 +1,4 @@
-import clientPromise from "@/app/lib/connectDB";
+import clientPromise from "@/lib/connectDB";
 import { NextResponse } from "next/server";
 
 export async function GET() {

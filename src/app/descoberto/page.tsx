@@ -1,37 +1,19 @@
 "use client"
+import { Dados, Info } from "@/interfaces/interface";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Container, Date, Header, Main, Marker, OptionPersonalized, PersonalizedSelect, Ruler, Titulo, Water } from "../styles/styles";
+import useDiscoverHeight from "../../hooks/useDiscoverHeight";
+import { Container, Header, Main, Marker, OptionPersonalized, PersonalizedSelect, Ruler, Titulo, Water, Date } from "../../styles/styles";
 
-
-interface IReservatorio {
-  _id: string;
-  descoberto: {
-      cota: string;
-      volumeHm: string;
-      volumePorc: string;
-      data: string;
-  };
-  santaMaria: {
-      cota: string;
-      volumeHm: string;
-      volumePorc: string;
-      data: string;
-  };
-}
-
-interface Dados {
-  data: IReservatorio[];
-}
 
 export default function Home() {
 
   const array = [97, 95, 93, 87, 85, 83, 77, 75, 73, 67, 65, 63, 57, 55, 53, 47, 45, 43, 37, 35, 33, 27, 25, 23, 17, 15, 13, 0.7, 0.5, 0.3]
   const bigNumbers = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10];
 
-  const [elementHeight, setElementHeight] = useState<number>();
   const [reservatoriesInformation, setReservatoriesInformation] = useState<Dados>();
-  const [originalValue, setOriginalValue] = useState<string | undefined>('');
+  const [elementInfo, setElementInfo] = useState<Info>()
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,46 +21,23 @@ export default function Home() {
         const data = await response.json();
         console.log(data)
         setReservatoriesInformation(data);
-
     };
 
     fetchData();
   }, []);
 
+
   useEffect(() => {
-    discoverHeight();
+    if (reservatoriesInformation) {
+      const elementHeightHook = useDiscoverHeight(reservatoriesInformation);
+      setElementInfo(elementHeightHook)
+    }
   }, [reservatoriesInformation])
-
-
-  function discoverHeight() {
-
-    const lastRegister = reservatoriesInformation?.data.slice(-1)[0];
-    setOriginalValue(lastRegister?.santaMaria.volumePorc);
-    if (originalValue !== undefined) {
-      let parsedValue = parseInt(originalValue);
-      let ultimoDigito = parsedValue.toString().charAt(parsedValue.toString().length - 1);
-
-      if (ultimoDigito == '1' || ultimoDigito == '9') {
-        parsedValue = parsedValue - 1
-      }
-  
-      const myElement = document.getElementById(`${parsedValue}`);
-  
-      if (myElement) {
-        const { top } = myElement.getBoundingClientRect();
-        const pageHeight = document.documentElement.scrollHeight;
-        const elementDistance = pageHeight - top;
-        if (elementDistance) {
-          setElementHeight(elementDistance);
-        }
-      }  
-    } 
-  }
 
   return (
     <Main>
      <Header>
-        <Titulo>Barragem de Santa Maria</Titulo>
+        <Titulo>Barragem do Descoberto</Titulo>
         <PersonalizedSelect>
           <OptionPersonalized>
             Descoberto
@@ -87,7 +46,6 @@ export default function Home() {
             Santa Maria
           </OptionPersonalized>
         </PersonalizedSelect>
-        
       </Header>
       <Container>
         <Ruler>
@@ -115,10 +73,11 @@ export default function Home() {
             );
           })}
         </Ruler>
-        <Water elementheight={elementHeight}>
+        
+        <Water elementheight={elementInfo?.elementHeight}>
           <div>
             <Image src="/arrow.png" alt="" width={25} height={25}  />
-            <h3>{originalValue}</h3>
+            <h3>{elementInfo?.originalValue}</h3>
           </div>
         </Water>
 
@@ -127,6 +86,7 @@ export default function Home() {
           {reservatoriesInformation?.data.slice(-1)[0].descoberto.data}
             </p>
         </Date>
+
       </Container>
     </Main>
   );

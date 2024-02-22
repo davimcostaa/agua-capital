@@ -9,7 +9,7 @@ const WaterRise = (elementHeight: number | undefined) => keyframes`
         height: 0px;
     }
     100% {
-        height: calc(${elementHeight}px - 6px);   
+        height: calc(${elementHeight}px);   
     }
 `;
 
@@ -135,11 +135,20 @@ export const Water = styled.div<KeyFrameProps>`
     > div {
         display: flex;
         position: absolute;
-        bottom: 90%; 
-        left: 101;     
-        align-items: center;
+        bottom: 10px;
         height: fit-content;
+        animation: ${({ elementheight }) => WaterRise(elementheight)} 6s ease forwards;
         color: white;
+        > h3 {
+            padding: 0;
+            margin: 0;
+        }
     }
+`
+
+export const Date = styled.div`
+    position: fixed;
+    bottom: 10px;
+    right: 10px; 
 `
 
