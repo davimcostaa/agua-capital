@@ -12,10 +12,12 @@ export interface IReservatorio {
         volumePorc: string;
         data: string;
     };
-  }
+    [key: string]: any; 
+}
   
 export interface Dados {
     data: IReservatorio[];
+    watershed: string;
 }
 
 export interface Info {  

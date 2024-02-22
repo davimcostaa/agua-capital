@@ -1,12 +1,13 @@
 import { Dados } from "@/interfaces/interface";
 
-function useDiscoverHeight(reservatoriesInformation: Dados) {
+function useDiscoverHeight(reservatoriesInformation: Dados, watershed: string) {
   let elementHeight = 0
   let originalValue = ''
 
     if (reservatoriesInformation && reservatoriesInformation.data.length > 0) {
+      const watershedName = watershed;
       const lastRegister = reservatoriesInformation.data.slice(-1)[0];
-      originalValue = lastRegister?.descoberto.volumePorc;
+      originalValue = lastRegister[watershed]?.volumePorc ?? '';
 
       if (originalValue !== undefined) {
         let parsedValue = parseInt(originalValue);

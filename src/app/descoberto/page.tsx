@@ -1,48 +1,50 @@
 "use client"
+import { array, bigNumbers } from '@/data/arrays.js';
 import { Dados, Info } from "@/interfaces/interface";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import useDiscoverHeight from "../../hooks/useDiscoverHeight";
 import { Container, Header, Main, Marker, OptionPersonalized, PersonalizedSelect, Ruler, Titulo, Water, Date } from "../../styles/styles";
-
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
 
-  const array = [97, 95, 93, 87, 85, 83, 77, 75, 73, 67, 65, 63, 57, 55, 53, 47, 45, 43, 37, 35, 33, 27, 25, 23, 17, 15, 13, 0.7, 0.5, 0.3]
-  const bigNumbers = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10];
-
   const [reservatoriesInformation, setReservatoriesInformation] = useState<Dados>();
-  const [elementInfo, setElementInfo] = useState<Info>()
-
+  const [elementInfo, setElementInfo] = useState<Info>();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
         const response = await fetch('/api/statistics/');
         const data = await response.json();
-        console.log(data)
         setReservatoriesInformation(data);
     };
 
     fetchData();
   }, []);
 
-
   useEffect(() => {
     if (reservatoriesInformation) {
-      const elementHeightHook = useDiscoverHeight(reservatoriesInformation);
+      const elementHeightHook = useDiscoverHeight(reservatoriesInformation, 'descoberto');
       setElementInfo(elementHeightHook)
     }
   }, [reservatoriesInformation])
+
+
+  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = event.target.value;
+    router.push(selectedValue); 
+  };
 
   return (
     <Main>
      <Header>
         <Titulo>Barragem do Descoberto</Titulo>
-        <PersonalizedSelect>
-          <OptionPersonalized>
+        <PersonalizedSelect onChange={handleChange}>
+          <OptionPersonalized value='/descoberto'>
             Descoberto
           </OptionPersonalized>
-          <OptionPersonalized>
+          <OptionPersonalized value='/'>
             Santa Maria
           </OptionPersonalized>
         </PersonalizedSelect>
@@ -77,14 +79,13 @@ export default function Home() {
         <Water elementheight={elementInfo?.elementHeight}>
           <div>
             <Image src="/arrow.png" alt="" width={25} height={25}  />
-            <h3>{elementInfo?.originalValue}</h3>
+            <h3>{elementInfo?.originalValue}%</h3>
           </div>
         </Water>
 
         <Date>
-            <p>
-          {reservatoriesInformation?.data.slice(-1)[0].descoberto.data}
-            </p>
+              Atualizado em: 
+              <span>{reservatoriesInformation?.data.slice(-1)[0].descoberto.data}</span>
         </Date>
 
       </Container>

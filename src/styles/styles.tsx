@@ -45,7 +45,8 @@ export const Header = styled.header`
     background-color: #011F4B;
     justify-content: space-around;
     align-items: center;
-    padding: 2px;
+    padding: 5px;
+
 `
 
 export const Titulo = styled.h1`
@@ -53,6 +54,10 @@ export const Titulo = styled.h1`
     margin: 0;
     text-align: center;
     color: white;
+
+    @media (max-width: 940px) {
+        font-size: 15px;
+ }
 `
 
 export const Ruler = styled.aside`
@@ -101,6 +106,11 @@ export const PersonalizedSelect = styled.select`
         border-radius: 0.25em;
         box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
         cursor: pointer;
+
+        @media (max-width: 940px) {
+               width: 8rem;
+               font-size: 10px;
+        }
 `
 
 export const OptionPersonalized = styled.option`
@@ -150,5 +160,7 @@ export const Date = styled.div`
     position: fixed;
     bottom: 10px;
     right: 10px; 
+    display: flex;
+    flex-direction: column;
 `
 
