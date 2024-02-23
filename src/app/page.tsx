@@ -23,7 +23,8 @@ export default function Home() {
             const response = await fetch('/api/statistics/', {
                 headers: {
                     'Cache-Control': 'no-cache' 
-                }
+                },
+                next: { revalidate: 60 }
             });
             const data = await response.json();
             setReservatoriesInformation(data);
