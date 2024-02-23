@@ -15,16 +15,25 @@ export default function Home() {
   const router = useRouter();
   const { height } = useWindowDimensions();
 
-
   useEffect(() => {
     const fetchData = async () => {
-        const response = await fetch('/api/statistics/');
-        const data = await response.json();
-        setReservatoriesInformation(data);
+        try {
+            const response = await fetch('/api/statistics/', {
+                headers: {
+                    'Cache-Control': 'no-cache' 
+                },
+                next: { revalidate: 10 },
+                cache: "no-store",
+            });
+            const data = await response.json();
+            setReservatoriesInformation(data);
+        } catch (error) {
+            console.error('Erro ao buscar dados:', error);
+        }
     };
 
     fetchData();
-  }, []);
+}, []);
 
   useEffect(() => {
     if (reservatoriesInformation) {
