@@ -22,7 +22,6 @@ export default function Home() {
                 headers: {
                     'Cache-Control': 'no-cache' 
                 },
-                next: { revalidate: 10 },
                 cache: "no-store",
             });
             const data = await response.json();

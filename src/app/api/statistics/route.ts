@@ -1,6 +1,8 @@
 import clientPromise from "@/lib/connectDB";
 import { NextResponse } from "next/server";
 
+export const revalidate = 0;
+
 export async function GET(request: Request) {
     try {
         const client = await clientPromise;
@@ -15,3 +17,4 @@ export async function GET(request: Request) {
         console.error(e);
     }
   }
+
