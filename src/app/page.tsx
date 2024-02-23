@@ -7,32 +7,42 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 import { Container, Date, Header, Main, Marker, OptionPersonalized, PersonalizedSelect, Ruler, Titulo, Water } from "../styles/styles";
 import { ChangeEvent } from 'react';
+import useWindowDimensions from '@/hooks/useWindowDimension';
 
 export default function Home() {
 
   const [reservatoriesInformation, setReservatoriesInformation] = useState<Dados>();
   const [elementInfo, setElementInfo] = useState<Info>();
+  const { width, height } = useWindowDimensions();
+
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
-        const response = await fetch('/api/statistics/');
-        const data = await response.json();
-        setReservatoriesInformation(data);
+        try {
+            const response = await fetch('/api/statistics/', {
+                headers: {
+                    'Cache-Control': 'no-cache' 
+                }
+            });
+            const data = await response.json();
+            setReservatoriesInformation(data);
+        } catch (error) {
+            console.error('Erro ao buscar dados:', error);
+        }
     };
 
     fetchData();
-  }, []);
-
+}, []);
 
   useEffect(() => {
     if (reservatoriesInformation) {
       const elementHeightHook = useDiscoverHeight(reservatoriesInformation, 'santaMaria');
       setElementInfo(elementHeightHook)
     }
-  }, [reservatoriesInformation])
+  }, [reservatoriesInformation, width, height])
 
-
+    
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = event.target.value;
     router.push(selectedValue); 
@@ -49,8 +59,7 @@ export default function Home() {
           <OptionPersonalized value='/descoberto'>
               Descoberto
           </OptionPersonalized>
-        </PersonalizedSelect>
-        
+        </PersonalizedSelect>        
       </Header>
       <Container>
         <Ruler>
@@ -84,6 +93,7 @@ export default function Home() {
             <h3>{elementInfo?.originalValue}%</h3>
           </div>
         </Water>
+        <h2>Acompanhe os níveis dos reservatórios do DF</h2>
 
         <Date>
               Atualizado em: 

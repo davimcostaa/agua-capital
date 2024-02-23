@@ -6,12 +6,15 @@ import { ChangeEvent, useEffect, useState } from "react";
 import useDiscoverHeight from "../../hooks/useDiscoverHeight";
 import { Container, Header, Main, Marker, OptionPersonalized, PersonalizedSelect, Ruler, Titulo, Water, Date } from "../../styles/styles";
 import { useRouter } from 'next/navigation';
+import useWindowDimensions from '@/hooks/useWindowDimension';
 
 export default function Home() {
 
   const [reservatoriesInformation, setReservatoriesInformation] = useState<Dados>();
   const [elementInfo, setElementInfo] = useState<Info>();
   const router = useRouter();
+  const { height } = useWindowDimensions();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +31,7 @@ export default function Home() {
       const elementHeightHook = useDiscoverHeight(reservatoriesInformation, 'descoberto');
       setElementInfo(elementHeightHook)
     }
-  }, [reservatoriesInformation])
+  }, [reservatoriesInformation, height])
 
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -82,6 +85,7 @@ export default function Home() {
             <h3>{elementInfo?.originalValue}%</h3>
           </div>
         </Water>
+        <h2>Acompanhe os níveis dos reservatórios do DF</h2>
 
         <Date>
               Atualizado em: 

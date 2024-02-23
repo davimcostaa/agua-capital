@@ -28,6 +28,16 @@ export const Container = styled.div`
     height: 100%;
     background-color: #011F4B;
 
+    > h2 {
+        text-align: center;
+        color: white;
+
+        @media (max-width: 840px) {
+            text-align: right;
+            padding-right: 10px;
+        }
+    }
+
     // @media (max-width: 640px) {
     //   width: 100vw;
     // }

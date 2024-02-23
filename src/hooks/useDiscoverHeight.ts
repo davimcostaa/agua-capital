@@ -5,7 +5,6 @@ function useDiscoverHeight(reservatoriesInformation: Dados, watershed: string) {
   let originalValue = ''
 
     if (reservatoriesInformation && reservatoriesInformation.data.length > 0) {
-      const watershedName = watershed;
       const lastRegister = reservatoriesInformation.data.slice(-1)[0];
       originalValue = lastRegister[watershed]?.volumePorc ?? '';
 
