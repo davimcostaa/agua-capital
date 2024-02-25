@@ -35,6 +35,8 @@ export const Container = styled.div`
         @media (max-width: 840px) {
             text-align: right;
             padding-right: 10px;
+            padding-left: 105px;
+            width: fit-content;
         }
     }
 
